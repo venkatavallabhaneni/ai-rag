@@ -10,6 +10,7 @@ import com.venkat.rag.store.VectorStore;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
 import com.venkat.rag.dto.IngestRequest;
 import com.venkat.rag.dto.IngestResponse;
 import com.venkat.rag.dto.SearchRequest;
@@ -44,6 +45,11 @@ public class RagController {
         .documentsIngested(docs.size())
         .chunksStored(chunksStored)
         .build();
+  }
+
+  @GetMapping("/ask")
+  public String ask(@RequestParam("prompt") String prompt) {
+   return ragService.ask(prompt);
   }
 
   @PostMapping("/search")

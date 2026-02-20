@@ -1,5 +1,6 @@
 package com.venkat.rag.service;
 
+import com.openai.models.responses.ResponseCreateParams;
 import com.venkat.rag.model.Chunk;
 import com.venkat.rag.model.Document;
 import com.venkat.rag.model.VectorRecord;
@@ -7,6 +8,7 @@ import com.venkat.rag.store.VectorStore;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RagService {
@@ -38,5 +40,33 @@ public class RagService {
   public List<VectorStore.ScoredRecord> retrieve(String query, int topK) {
     List<Double> qVec = embeddingClient.embed(query);
     return vectorStore.search(qVec, topK);
+  }
+
+  public String ask(String query) {
+
+    List<VectorStore.ScoredRecord> results = retrieve(query, 1);
+
+    List<Chunk> chunksFromRag = results.stream().map(record -> record.record().payload()).toList();
+
+    return this.getSummaryFromLLM(query, chunksFromRag);
+
+  }
+
+  private String getSummaryFromLLM(String prompt, List<Chunk> relevantChunks) {
+
+    String context = relevantChunks.stream().map(c -> "- " + c.text()).collect(Collectors.joining("\n"));
+
+    String inlinePromptAdvise = """
+        Answer ONLY using the provided context.
+        If the answer is not in the context, say: "I don't know based on the provided context."
+
+        CONTEXT:
+        %s
+
+        QUESTION:
+        %s
+        """.formatted(context, prompt);
+
+    return embeddingClient.chat(inlinePromptAdvise);
   }
 }

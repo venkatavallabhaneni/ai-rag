@@ -4,19 +4,20 @@ import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.embeddings.CreateEmbeddingResponse;
 import com.openai.models.embeddings.EmbeddingCreateParams;
+import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class EmbeddingClient {
   private final OpenAIClient client;
   private final String model;
 
-  public EmbeddingClient(
-      @Value("${OPENAI_API_KEY:}") String apiKey,
-      @Value("${openai.embedding.model}") String model) {
+  public EmbeddingClient(@Value("${OPENAI_API_KEY:}") String apiKey, @Value("${openai.embedding.model}") String model) {
     if (apiKey == null || apiKey.isBlank()) {
       throw new IllegalStateException("OPENAI_API_KEY is required");
     }
@@ -25,18 +26,24 @@ public class EmbeddingClient {
   }
 
   public List<Double> embed(String text) {
-    CreateEmbeddingResponse response = client.embeddings().create(
-        EmbeddingCreateParams.builder()
-            .model(model)
-            .input(text)
-            .build());
+    CreateEmbeddingResponse response = client.embeddings()
+        .create(EmbeddingCreateParams.builder().model(model).input(text).build());
 
     if (response.data().isEmpty()) {
       throw new IllegalStateException("OpenAI returned empty embedding data");
     }
 
-    return response.data().get(0).embedding().stream()
-        .map(Double::valueOf)
-        .toList();
+    return response.data().get(0).embedding().stream().map(Double::valueOf).toList();
   }
+
+  public String chat(String input) {
+    ResponseCreateParams params = ResponseCreateParams.builder().model("gpt-4o-mini").input(input).build();
+
+    Response response = client.responses().create(params);
+    String output = response.output().stream().flatMap(
+        choice -> choice.message().map(message -> message.content().stream()).orElseGet(java.util.stream.Stream::empty))
+        .map(Object::toString).collect(Collectors.joining("\n"));
+    return output;
+  }
+
 }

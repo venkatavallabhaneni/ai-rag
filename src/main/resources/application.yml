@@ -1,0 +1,22 @@
+server:
+  port: 8086
+
+rag:
+  chunkSize: 500
+  overlap: 100   # 20% overlap
+
+aiGateway:
+  embedUrl: "https://api.openai.com/v1/embeddings"
+
+openai:
+  embedding:
+    model: "text-embedding-3-small"
+
+milvus:
+  host: "localhost"
+  port: 19530
+  collection: "rag_chunks"
+  vectorDim: 1536   # IMPORTANT: must match your embedding model dimension
+  metricType: "COSINE"
+
+

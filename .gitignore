@@ -1,0 +1,125 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE - Eclipse
+.classpath
+.project
+.c9/
+*.launch
+.settings/
+
+# IDE - IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# IDE - VSCode
+.vscode/
+*.code-workspace
+
+# IDE - Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# IDE - NetBeans
+nbproject/
+.nb-gradle/
+
+# Java compiled classes
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# JetBrains IDE specific files
+*.swp
+*.swo
+*~
+
+# Gradle
+.gradle/
+build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.Trash-*
+.~*
+
+# Node/npm
+node_modules/
+npm-debug.log
+package-lock.json
+yarn.lock
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Application logs
+logs/
+*.log
+
+# STS (Spring Tool Suite)
+.sts4-cache/
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Data directories
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build artifacts and caches
+.gradle/
+build/
+dist/
+bin/
+
+# Generated sources
+src/main/java/*/generated/
+src/test/java/*/generated/
+
+# IDE cache
+.cache/
+
+# OS-specific
+.AppleDouble
+._*

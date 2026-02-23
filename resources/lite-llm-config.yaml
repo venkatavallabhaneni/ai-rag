@@ -1,0 +1,18 @@
+model_list:
+  - model_name: gpt-4o-mini
+    litellm_params:
+      model: openai/gpt-4o-mini
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: text-embedding-3-small
+    litellm_params:
+      model: openai/text-embedding-3-small
+      api_key: os.environ/OPENAI_API_KEY
+
+general_settings:
+  port: 4000
+  debug: true
+  litellm_settings:
+    log_response_time: true
+    log_success_callback: ["print_cost_logs"]
+    log_failure_callback: ["print_cost_logs"]
+  print_deployments_on_start: true

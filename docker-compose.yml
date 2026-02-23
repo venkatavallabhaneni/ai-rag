@@ -1,6 +1,27 @@
 version: "3.5"
 
 services:
+  litellm:
+    image: ghcr.io/berriai/litellm:main-stable
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    env_file:
+      - .env
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:?OPENAI_API_KEY must be set in .env}
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY:-local-test-key}
+      - LITELLM_LOG_LEVEL=INFO
+      - LITELLM_DEBUG=true
+    volumes:
+      - ./resources/lite-llm-config.yaml:/app/config.yaml:ro
+      - ./data/litellm:/app/data:rw
+    ports:
+      - "4000:4000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
   etcd:
     image: quay.io/coreos/etcd:v3.5.5
     environment:

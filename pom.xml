@@ -57,12 +57,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.openai</groupId>
-      <artifactId>openai-java</artifactId>
-      <version>4.5.0</version>
-    </dependency>
-
-    <dependency>
      <groupId>io.milvus</groupId>
      <artifactId>milvus-sdk-java</artifactId>
     <version>2.4.0</version>

@@ -1,6 +1,5 @@
 package com.venkat.rag.service;
 
-import com.openai.models.responses.ResponseCreateParams;
 import com.venkat.rag.model.Chunk;
 import com.venkat.rag.model.Document;
 import com.venkat.rag.model.VectorRecord;
@@ -56,17 +55,10 @@ public class RagService {
 
     String context = relevantChunks.stream().map(c -> "- " + c.text()).collect(Collectors.joining("\n"));
 
-    String inlinePromptAdvise = """
-        Answer ONLY using the provided context.
-        If the answer is not in the context, say: "I don't know based on the provided context."
+    String systemPrompt = "You are a helpful RAG assistant. Answer questions based only on the provided context. If the answer is not in the context, say: \"I don't know based on the provided context.\"";
+    
+    String userMessage = "CONTEXT:\n" + context + "\n\nQUESTION:\n" + prompt;
 
-        CONTEXT:
-        %s
-
-        QUESTION:
-        %s
-        """.formatted(context, prompt);
-
-    return embeddingClient.chat(inlinePromptAdvise);
+    return embeddingClient.chat(userMessage, systemPrompt);
   }
 }
